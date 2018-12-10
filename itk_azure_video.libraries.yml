@@ -1,0 +1,6 @@
+azure-video:
+  css:
+    theme:
+      css/itk_azure_video.css: {}
+  js:
+    js/lib/dash/dash.all.min.js: {}
