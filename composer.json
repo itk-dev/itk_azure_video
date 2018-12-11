@@ -1,5 +1,5 @@
 {
-  "name": "itk-dev/azure-video-drupal8",
+  "name": "itk-dev/itk_azure_video",
   "type": "drupal-module",
   "description": "Module that supplies an Azure Video Media Service field for Drupal 8",
   "keywords": ["Drupal"],
