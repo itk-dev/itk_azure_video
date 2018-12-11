@@ -36,6 +36,9 @@ class AzureVideoFormatter extends FormatterBase {
     $summary[] = $this->t('Autoplay: @autoplay.', ['@autoplay' =>
       $this->getSetting('autoplay') ? $this->t('Yes'): $this->t('No')
     ]);
+    $summary[] = $this->t('Controls: @controls.', ['@controls' =>
+      $this->getSetting('controls') ? $this->t('Yes'): $this->t('No')
+    ]);
     return $summary;
   }
 
@@ -54,14 +57,18 @@ class AzureVideoFormatter extends FormatterBase {
       $settings[] = 'autoplay';
     }
 
+    if ($this->getSetting('controls')) {
+      $settings[] = 'controls';
+    }
+
     $settingsString = implode(' ', $settings);
 
     foreach ($items as $delta => $item) {
-      $url = $item->value;
-      $pathInfo = pathinfo($url);
+      $source = $item->value;
+      $pathInfo = pathinfo($source);
 
       if ($pathInfo['extension'] == '') {
-        $url .= '(format=mpd-time-csf)';
+        $source .= '(format=mpd-time-csf)';
       }
 
       $classes = ['itk-azure-video'];
@@ -74,11 +81,8 @@ class AzureVideoFormatter extends FormatterBase {
 
       $markup =
         '<div class="'.$classesString.'">' .
-        '<video data-dashjs-player '.$settingsString.' src="'.$url.'" controls></video>' .
+        '<video data-dashjs-player disablePictureInPicture '.$settingsString.' src="'.$source.'"></video>' .
         '</div>';
-
-      // Render each element as markup.
-      $element[$delta] = ['#markup' => $markup];
 
       $element[$delta] = [
         '#type' => 'inline_template',
@@ -98,6 +102,7 @@ class AzureVideoFormatter extends FormatterBase {
         'responsive' => true,
         'muted' => false,
         'autoplay' => false,
+        'controls' => true,
       ] + parent::defaultSettings();
   }
 
@@ -120,6 +125,11 @@ class AzureVideoFormatter extends FormatterBase {
       '#title' => $this->t('Autoplay'),
       '#type' => 'checkbox',
       '#default_value' => $this->getSetting('autoplay'),
+    ];
+    $element['controls'] = [
+      '#title' => $this->t('Controls'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('controls'),
     ];
 
     return $element;

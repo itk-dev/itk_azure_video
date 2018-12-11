@@ -1,5 +1,10 @@
 # itk-dev/itk_azure_video
 
+## 1.0.2
+
+* Added controls settings.
+* Removed picture-in-picture video option.
+
 ## 1.0.1
 
 * Added formatter settings.
