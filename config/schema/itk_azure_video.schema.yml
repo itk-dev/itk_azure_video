@@ -1,0 +1,7 @@
+field.formatter.settings.itk_azure_video_formatter:
+  type: mapping
+  label: 'Azure Video settings'
+  mapping:
+    responsive:
+      type: boolean
+      label: 'Responsive'

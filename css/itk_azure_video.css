@@ -1,3 +1,6 @@
-.itk-azure-video > video {
+.itk-azure-video {
+}
+
+.itk-azure-video-responsive > video {
   width: 100%;
 }
