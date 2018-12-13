@@ -1,5 +1,9 @@
 # itk-dev/itk_azure_video
 
+## 1.0.4
+
+* Fixed schema issues.
+
 ## 1.0.3
 
 * Fixed composer name.
