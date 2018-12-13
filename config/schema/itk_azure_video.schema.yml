@@ -5,3 +5,12 @@ field.formatter.settings.itk_azure_video_formatter:
     responsive:
       type: boolean
       label: 'Responsive'
+    muted:
+      type: boolean
+      label: 'Muted'
+    autoplay:
+      type: boolean
+      label: 'Autoplay'
+    controls:
+      type: boolean
+      label: 'Controls'

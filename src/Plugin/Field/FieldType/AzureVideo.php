@@ -27,13 +27,15 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'value' => array(
+    return [
+      'columns' => [
+        'value' => [
           'type' => 'varchar',
-        ),
-      ),
-    );
+          'length' => (int) $field_definition->getSetting('max_length'),
+          'binary' => $field_definition->getSetting('case_sensitive'),
+        ],
+      ],
+    ];
   }
 
   /**
