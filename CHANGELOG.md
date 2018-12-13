@@ -1,5 +1,9 @@
 # itk-dev/itk_azure_video
 
+## 1.0.5
+
+* Fixed issues with length and formatter.
+
 ## 1.0.4
 
 * Fixed schema issues.
