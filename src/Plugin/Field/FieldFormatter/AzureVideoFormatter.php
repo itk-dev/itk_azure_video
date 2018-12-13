@@ -67,7 +67,7 @@ class AzureVideoFormatter extends FormatterBase {
       $source = $item->value;
       $pathInfo = pathinfo($source);
 
-      if ($pathInfo['extension'] == '') {
+      if (!isset($pathInfo['extension']) ||  $pathInfo['extension'] == '') {
         $source .= '(format=mpd-time-csf)';
       }
 

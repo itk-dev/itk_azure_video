@@ -31,8 +31,7 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
       'columns' => [
         'value' => [
           'type' => 'varchar',
-          'length' => (int) $field_definition->getSetting('max_length'),
-          'binary' => $field_definition->getSetting('case_sensitive'),
+          'length' => 2048,
         ],
       ],
     ];
