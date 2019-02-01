@@ -79,16 +79,30 @@ class AzureVideoFormatter extends FormatterBase {
 
       $classesString = implode(' ', $classes);
 
-      $markup =
-        '<div class="'.$classesString.'">' .
-        '<video data-dashjs-player disablePictureInPicture '.$settingsString.' src="'.$source.'"></video>' .
-        '</div>';
+      $fallback = $item->fallback;
+
+      if (isset($source) || isset($fallback)) {
+        $markup =
+          '<div class="'.$classesString.'">' .
+          '<video data-dashjs-player disablePictureInPicture '.$settingsString.'>' .
+            (isset($source) ? '<source src="'.$source.'" type="application/dash+xml">' : '') .
+            (isset($fallback) ? '<source src="'.$fallback.'" type="video/mp4">' : '') .
+          '</video>' .
+          '</div>';
+      }
+      else {
+        $markup = '';
+      }
 
       $element[$delta] = [
         '#type' => 'inline_template',
         '#template' => $markup,
-        '#attached' => ['library'=> ['itk_azure_video/azure-video']],
       ];
+
+      // Only attach dash library if MPEG-DASH source set.
+      if (isset($source)) {
+        $element[$delta]['#attached'] = ['library'=> ['itk_azure_video/azure-video']];
+      }
     }
 
     return $element;
