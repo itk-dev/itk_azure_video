@@ -32,7 +32,13 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
         'value' => [
           'type' => 'varchar',
           'length' => 2048,
+          'not null' => FALSE,
         ],
+        'fallback' => [
+          'type' => 'varchar',
+          'length' => 2048,
+          'not null' => FALSE,
+        ]
       ],
     ];
   }
@@ -42,7 +48,9 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
    */
   public function isEmpty() {
     $value = $this->get('value')->getValue();
-    return $value === NULL || $value === '';
+    $fallback = $this->get('fallback')->getValue();
+
+    return ($value === NULL || $value === '') && ($fallback === NULL || $fallback === '');
   }
 
   /**
@@ -51,6 +59,8 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['value'] = DataDefinition::create('string')
       ->setLabel(t('Azure Video Url'));
+    $properties['fallback'] = DataDefinition::create('string')
+      ->setLabel(t('Azure Video Fallback Url (.mp4)'));
 
     return $properties;
   }

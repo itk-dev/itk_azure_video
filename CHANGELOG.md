@@ -1,5 +1,9 @@
 # itk-dev/itk_azure_video
 
+## 1.1.0
+
+* Added fallback video field for .mp4 files.
+
 ## 1.0.5
 
 * Fixed issues with length and formatter.

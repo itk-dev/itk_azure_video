@@ -1,0 +1,85 @@
+<?php
+
+use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+
+/**
+ * Add fallback field.
+ */
+function itk_azure_video_update_8101(&$sandbox) {
+  // Based on https://www.drupal.org/files/issues/2018-12-14/3018101-update-6.patch
+
+  // The process is:
+  // 1. Determine all entity types with date recur fields and load their
+  //    definitions.
+  // 2. Update the SQL table schema for all relevant tables.
+  // 3. Inform Drupal of the expected table schemas.
+  // 4. Update Drupal's entity type definitions.
+  $fieldType = 'itk_azure_video_field';
+  $schema = \Drupal::database()->schema();
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $entityFieldManager = \Drupal::service('entity_field.manager');
+  $entityFieldMap = $entityFieldManager->getFieldMapByFieldType($fieldType);
+  $entityStorageSchemaSql = \Drupal::keyValue('entity.storage_schema.sql');
+  /** @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $lastInstalledSchemaRepository */
+  $lastInstalledSchemaRepository = \Drupal::service('entity.last_installed_schema.repository');
+
+  // The new SQL schema for our column.
+  $specification = [
+    'type' => 'varchar',
+    'length' => 2048,
+    'not null' => FALSE,
+  ];
+
+  // Iterate over all itk_azure_video_field fields for all entity types.
+  foreach ($entityFieldMap as $entityTypeId => $fields) {
+    $entityStorage = $entityTypeManager->getStorage($entityTypeId);
+    if (!$entityStorage instanceof SqlEntityStorageInterface) {
+      continue;
+    }
+
+    $entityType = $entityTypeManager->getDefinition($entityTypeId);
+    // Loads definitions for all fields (even non date_recur).
+    $entityFieldStorageDefinitions = $entityFieldManager->getFieldStorageDefinitions($entityTypeId);
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $tableMapping */
+    $tableMapping = $entityStorage->getTableMapping($entityFieldStorageDefinitions);
+
+    // Intersect date_recur fields with storage definitions for all fields.
+    /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface[] $fieldDefinitions */
+    $fieldDefinitions = array_intersect_key($entityFieldStorageDefinitions,
+      $fields);
+
+    // Iterate over all itk_azure_video_field field definitions for this entity type.
+    foreach ($fieldDefinitions as $fieldDefinition) {
+      $fieldName = $fieldDefinition->getName();
+      $tables = [];
+      $tables[] = $tableMapping->getFieldTableName($fieldName);
+      if ($entityType->isRevisionable() && $fieldDefinition->isRevisionable()) {
+        $tables[] = $tableMapping->getDedicatedRevisionTableName($fieldDefinition);
+      }
+
+      // Field type column names map to real table column names.
+      $columns = $tableMapping->getColumnNames($fieldName);
+
+      $fallbackColumnName = $columns['fallback'];
+
+      foreach ($tables as $table) {
+        // Change the column spec here.
+        $schema->addField($table, $fallbackColumnName, $specification);
+      }
+
+      // Update the tracked entity table schema.
+      $schemaKey = "$entityTypeId.field_schema_data.$fieldName";
+      $fieldSchemaData = $entityStorageSchemaSql->get($schemaKey);
+      $entityStorageSchemaSql->set($schemaKey, $fieldSchemaData);
+
+      // Update cached entity definitions for entity types with of single
+      // cardinality base fields.
+      if ($tableMapping->allowsSharedTableStorage($fieldDefinition)) {
+        $definitions = $lastInstalledSchemaRepository->getLastInstalledFieldStorageDefinitions($entityTypeId);
+        $definitions[$fieldName] = $fieldDefinition;
+        $lastInstalledSchemaRepository->setLastInstalledFieldStorageDefinitions($entityTypeId,
+          $definitions);
+      }
+    }
+  }
+}
