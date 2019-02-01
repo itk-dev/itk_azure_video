@@ -145,4 +145,5 @@ class AzureVideoFormatter extends FormatterBase {
 
     return $element;
   }
+
 }
