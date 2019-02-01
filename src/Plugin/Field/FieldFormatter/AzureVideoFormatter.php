@@ -67,7 +67,7 @@ class AzureVideoFormatter extends FormatterBase {
       $source = $item->value;
       $pathInfo = pathinfo($source);
 
-      if (!isset($pathInfo['extension']) ||  $pathInfo['extension'] == '') {
+      if (!empty($source) && (!isset($pathInfo['extension']) ||  $pathInfo['extension'] == '')) {
         $source .= '(format=mpd-time-csf)';
       }
 
@@ -79,16 +79,27 @@ class AzureVideoFormatter extends FormatterBase {
 
       $classesString = implode(' ', $classes);
 
-      $markup =
-        '<div class="'.$classesString.'">' .
-        '<video data-dashjs-player disablePictureInPicture '.$settingsString.' src="'.$source.'"></video>' .
-        '</div>';
+      $fallback = $item->fallback;
 
-      $element[$delta] = [
-        '#type' => 'inline_template',
-        '#template' => $markup,
-        '#attached' => ['library'=> ['itk_azure_video/azure-video']],
-      ];
+      if (!empty($source) || !empty($fallback)) {
+        $markup =
+          '<div class="'.$classesString.'">' .
+          '<video data-dashjs-player disablePictureInPicture '.$settingsString.'>' .
+            (!empty($source) ? '<source src="'.$source.'" type="application/dash+xml">' : '') .
+            (!empty($fallback) ? '<source src="'.$fallback.'" type="video/mp4">' : '') .
+          '</video>' .
+          '</div>';
+
+        $element[$delta] = [
+          '#type' => 'inline_template',
+          '#template' => $markup,
+        ];
+
+        // Only attach dash library if MPEG-DASH source set.
+        if (isset($source)) {
+          $element[$delta]['#attached'] = ['library'=> ['itk_azure_video/azure-video']];
+        }
+      }
     }
 
     return $element;
@@ -134,4 +145,5 @@ class AzureVideoFormatter extends FormatterBase {
 
     return $element;
   }
+
 }
