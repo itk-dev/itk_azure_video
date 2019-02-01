@@ -48,7 +48,9 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
    */
   public function isEmpty() {
     $value = $this->get('value')->getValue();
-    return $value === NULL || $value === '';
+    $fallback = $this->get('fallback')->getValue();
+
+    return ($value === NULL || $value === '') && ($fallback === NULL || $fallback === '');
   }
 
   /**
