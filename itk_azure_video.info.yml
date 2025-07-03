@@ -1,6 +1,6 @@
 name: ITK Azure video
 type: module
-description: 'Module that supplies an Azure Video Media Service field for Drupal 8'
+description: 'Module that supplies an Azure Video Media Service field'
 package: ITK
 core: '8.x'
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^10 || ^11
