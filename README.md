@@ -1,2 +1,3 @@
-# itk_azure_video (Drupal 8 module)
-Module that supplies an Azure Video Media Service field for Drupal 8
+# itk_azure_video (Drupal module)
+
+Module that supplies an Azure Video Media Service field for Drupal

@@ -4,8 +4,6 @@ namespace Drupal\itk_azure_video\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\Annotation\FieldFormatter;
-use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -27,17 +25,21 @@ class AzureVideoFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    $summary[] = $this->t('Responsive: @responsive.', ['@responsive' =>
-      $this->getSetting('responsive') ? $this->t('Yes'): $this->t('No')
+    $summary[] = $this->t('Responsive: @responsive.', [
+      '@responsive' =>
+      $this->getSetting('responsive') ? $this->t('Yes') : $this->t('No'),
     ]);
-    $summary[] = $this->t('Muted: @muted.', ['@muted' =>
-      $this->getSetting('muted') ? $this->t('Yes'): $this->t('No')
+    $summary[] = $this->t('Muted: @muted.', [
+      '@muted' =>
+      $this->getSetting('muted') ? $this->t('Yes') : $this->t('No'),
     ]);
-    $summary[] = $this->t('Autoplay: @autoplay.', ['@autoplay' =>
-      $this->getSetting('autoplay') ? $this->t('Yes'): $this->t('No')
+    $summary[] = $this->t('Autoplay: @autoplay.', [
+      '@autoplay' =>
+      $this->getSetting('autoplay') ? $this->t('Yes') : $this->t('No'),
     ]);
-    $summary[] = $this->t('Controls: @controls.', ['@controls' =>
-      $this->getSetting('controls') ? $this->t('Yes'): $this->t('No')
+    $summary[] = $this->t('Controls: @controls.', [
+      '@controls' =>
+      $this->getSetting('controls') ? $this->t('Yes') : $this->t('No'),
     ]);
     return $summary;
   }
@@ -83,10 +85,10 @@ class AzureVideoFormatter extends FormatterBase {
 
       if (!empty($source) || !empty($fallback)) {
         $markup =
-          '<div class="'.$classesString.'">' .
-          '<video data-dashjs-player disablePictureInPicture '.$settingsString.'>' .
-            (!empty($source) ? '<source src="'.$source.'" type="application/dash+xml">' : '') .
-            (!empty($fallback) ? '<source src="'.$fallback.'" type="video/mp4">' : '') .
+          '<div class="' . $classesString . '">' .
+          '<video data-dashjs-player disablePictureInPicture ' . $settingsString . '>' .
+            (!empty($source) ? '<source src="' . $source . '" type="application/dash+xml">' : '') .
+            (!empty($fallback) ? '<source src="' . $fallback . '" type="video/mp4">' : '') .
           '</video>' .
           '</div>';
 
@@ -97,7 +99,7 @@ class AzureVideoFormatter extends FormatterBase {
 
         // Only attach dash library if MPEG-DASH source set.
         if (isset($source)) {
-          $element[$delta]['#attached'] = ['library'=> ['itk_azure_video/azure-video']];
+          $element[$delta]['#attached'] = ['library' => ['itk_azure_video/azure-video']];
         }
       }
     }
@@ -110,11 +112,11 @@ class AzureVideoFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'responsive' => true,
-        'muted' => false,
-        'autoplay' => false,
-        'controls' => true,
-      ] + parent::defaultSettings();
+      'responsive' => TRUE,
+      'muted' => FALSE,
+      'autoplay' => FALSE,
+      'controls' => TRUE,
+    ] + parent::defaultSettings();
   }
 
   /**

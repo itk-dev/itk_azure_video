@@ -1,5 +1,14 @@
 # itk-dev/itk_azure_video
 
+## 2.1.0
+
+* Added drupal 11 compatibility
+* Added github actions
+
+## 2.0.0
+
+* Added drupal 10 compatibility
+
 ## 1.1.0
 
 * Added fallback video field for .mp4 files.
