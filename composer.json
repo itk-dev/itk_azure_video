@@ -1,7 +1,7 @@
 {
     "name": "itk-dev/itk_azure_video",
     "type": "drupal-module",
-    "description": "Module that supplies an Azure Video Media Service field for Drupal 8",
+    "description": "Module that supplies an Azure Video Media Service field for Drupal",
     "keywords": ["Drupal"],
     "license": "MIT",
     "minimum-stability": "dev",
