@@ -6,8 +6,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Field\Annotation\FieldType;
-use Drupal\Core\Annotation\Translation;
 
 /**
  * Plugin implementation of the 'itk_azure_video_field' field type.
@@ -38,7 +36,7 @@ class AzureVideo extends FieldItemBase implements FieldItemInterface {
           'type' => 'varchar',
           'length' => 2048,
           'not null' => FALSE,
-        ]
+        ],
       ],
     ];
   }

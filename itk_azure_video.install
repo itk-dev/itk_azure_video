@@ -1,13 +1,18 @@
 <?php
 
+/**
+ * @file
+ * Install hooks for itk_azure video.
+ */
+
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 
 /**
  * Add fallback field.
  */
 function itk_azure_video_update_8101(&$sandbox) {
-  // Based on https://www.drupal.org/files/issues/2018-12-14/3018101-update-6.patch
-
+  // Based on
+  // https://www.drupal.org/files/issues/2018-12-14/3018101-update-6.patch
   // The process is:
   // 1. Determine all entity types with date recur fields and load their
   //    definitions.
@@ -48,7 +53,8 @@ function itk_azure_video_update_8101(&$sandbox) {
     $fieldDefinitions = array_intersect_key($entityFieldStorageDefinitions,
       $fields);
 
-    // Iterate over all itk_azure_video_field field definitions for this entity type.
+    // Iterate over all itk_azure_video_field field definitions for this entity
+    // type.
     foreach ($fieldDefinitions as $fieldDefinition) {
       $fieldName = $fieldDefinition->getName();
       $tables = [];

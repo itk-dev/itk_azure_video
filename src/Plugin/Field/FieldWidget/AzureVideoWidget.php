@@ -2,8 +2,6 @@
 
 namespace Drupal\itk_azure_video\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\Annotation\FieldWidget;
-use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\UriWidget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -27,19 +25,19 @@ class AzureVideoWidget extends UriWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $value = $element + [
-        '#type' => 'url',
-        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
-        '#size' => $this->getSetting('size'),
-        '#placeholder' => $this->getSetting('placeholder'),
-        '#maxlength' => $this->getFieldSetting('max_length'),
-      ];
+      '#type' => 'url',
+      '#default_value' => $items[$delta]->value ?? NULL,
+      '#size' => $this->getSetting('size'),
+      '#placeholder' => $this->getSetting('placeholder'),
+      '#maxlength' => $this->getFieldSetting('max_length'),
+    ];
     $fallback = $element + [
-        '#type' => 'url',
-        '#default_value' => isset($items[$delta]->fallback) ? $items[$delta]->fallback : NULL,
-        '#size' => $this->getSetting('size'),
-        '#placeholder' => $this->getSetting('placeholder'),
-        '#maxlength' => $this->getFieldSetting('max_length'),
-      ];
+      '#type' => 'url',
+      '#default_value' => $items[$delta]->fallback ?? NULL,
+      '#size' => $this->getSetting('size'),
+      '#placeholder' => $this->getSetting('placeholder'),
+      '#maxlength' => $this->getFieldSetting('max_length'),
+    ];
 
     $element['value'] = $value;
     $element['fallback'] = $fallback;
