@@ -3,6 +3,7 @@
 ## 2.1.0
 
 * Added drupal 11 compatibility
+* Added github actions
 
 ## 2.0.0
 
